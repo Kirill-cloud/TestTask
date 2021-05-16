@@ -13,9 +13,9 @@ namespace Project3.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private Model.AppContext context;
+        private readonly Model.UsersContext context;
 
-        public UsersController(Model.AppContext context) 
+        public UsersController(Model.UsersContext context)
         {
             this.context = context;
         }
@@ -31,7 +31,7 @@ namespace Project3.Controllers
         {
             try
             {
-                DBMethods.SaveGroup(usersToSave.ToList<User>(),context);
+                DBMethods.SaveGroup(usersToSave.ToList<User>(), context);
                 return Ok();
             }
             catch (Exception)
@@ -43,20 +43,36 @@ namespace Project3.Controllers
         [HttpPost]
         public PostResponce Calculate([FromBody] User[] usersToCalculate)
         {
-            List<int> daysBetween = new List<int>();
+            return new PostResponce()
+            {
+                UsersLifeTime = CalculateUsersLifeTimes(usersToCalculate),
+                RR7days = CalculateAndFormatRetantion7Days(usersToCalculate)
+            };
+            (List<int> UsersLifeTime, string RR7days) x;
+            x.UsersLifeTime = CalculateUsersLifeTimes(usersToCalculate);
+            x.RR7days = CalculateAndFormatRetantion7Days(usersToCalculate);
+        }
+
+        private List<int> CalculateUsersLifeTimes(User[] usersToCalculate)
+        {
+            List<int> daysBetween = new();
 
             foreach (var item in usersToCalculate)
             {
                 daysBetween.Add(GetDaysBetweenStringDates(item.RegistrationDate, item.LastActivityDate));
             }
 
-            string Retantion7Days = CalculateRetantion7Days(usersToCalculate);
+            return daysBetween;
+        }
+        int GetDaysBetweenStringDates(string smallerDate, string biggerDate)
+        {
+            var sDate = DateTime.ParseExact(smallerDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            var bDate = DateTime.ParseExact(biggerDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-
-            return new PostResponce() { UsersLifeTime = daysBetween, RR7days = Retantion7Days };
+            return (bDate - sDate).Days;
         }
 
-        string CalculateRetantion7Days(User[] users)
+        string CalculateAndFormatRetantion7Days(User[] users)
         {
             DateTime sevenDay = DateTime.Now.AddDays(-7);
 
@@ -73,14 +89,6 @@ namespace Project3.Controllers
             }
 
             return result;
-        }
-
-        int GetDaysBetweenStringDates(string smallerDate, string biggerDate)
-        {
-            var sDate = DateTime.ParseExact(smallerDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            var bDate = DateTime.ParseExact(biggerDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-
-            return (bDate - sDate).Days;
         }
 
         public class PostResponce

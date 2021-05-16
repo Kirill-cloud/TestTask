@@ -9,7 +9,7 @@ using Project3.Model;
 
 namespace Project3.Migrations
 {
-    [DbContext(typeof(Model.AppContext))]
+    [DbContext(typeof(Model.UsersContext))]
     [Migration("20210516060734_initial")]
     partial class initial
     {

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Project3.Model
 {
-    public class AppContext : DbContext
+    public class UsersContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -18,7 +18,7 @@ namespace Project3.Model
         //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=UsersHistory;Trusted_Connection=True;");
         //}
 
-        public AppContext(DbContextOptions<AppContext> options)
+        public UsersContext(DbContextOptions<UsersContext> options)
     : base(options)
         {
             Database.EnsureCreated();

@@ -9,7 +9,7 @@ namespace Project3.Model
 {
     public static class DBMethods
     {
-        public static void SaveGroup(List<User> users, AppContext db)
+        public static void SaveGroup(List<User> users, UsersContext db)
         {
             var Group = new Group() { SaveDateTime = DateTime.Now, Users = users };
 

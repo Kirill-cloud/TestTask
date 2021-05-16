@@ -15,7 +15,7 @@ namespace Project3.Controllers
     {
         private readonly Model.UsersContext context;
 
-        public UsersController(Model.UsersContext context)
+        public UsersController(Model.UsersContext context) 
         {
             this.context = context;
         }
@@ -31,7 +31,7 @@ namespace Project3.Controllers
         {
             try
             {
-                DBMethods.SaveGroup(usersToSave.ToList<User>(), context);
+                DBMethods.SaveGroup(usersToSave.ToList<User>(),context);
                 return Ok();
             }
             catch (Exception)
@@ -43,14 +43,10 @@ namespace Project3.Controllers
         [HttpPost]
         public PostResponce Calculate([FromBody] User[] usersToCalculate)
         {
-            return new PostResponce()
-            {
-                UsersLifeTime = CalculateUsersLifeTimes(usersToCalculate),
-                RR7days = CalculateAndFormatRetantion7Days(usersToCalculate)
+            return new PostResponce() { 
+                UsersLifeTime = CalculateUsersLifeTimes(usersToCalculate), 
+                RR7days = CalculateAndFormatRetantion7Days(usersToCalculate) 
             };
-            (List<int> UsersLifeTime, string RR7days) x;
-            x.UsersLifeTime = CalculateUsersLifeTimes(usersToCalculate);
-            x.RR7days = CalculateAndFormatRetantion7Days(usersToCalculate);
         }
 
         private List<int> CalculateUsersLifeTimes(User[] usersToCalculate)

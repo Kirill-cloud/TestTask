@@ -13,7 +13,6 @@ namespace Project3.Model
         {
             var Group = new Group() { SaveDateTime = DateTime.Now, Users = users };
 
-            //using AppContext db = new();
             db.Groups.Add(Group);
             db.SaveChanges();
         }

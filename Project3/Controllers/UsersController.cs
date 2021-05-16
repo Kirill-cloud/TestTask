@@ -13,6 +13,13 @@ namespace Project3.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
+        private Model.AppContext context;
+
+        public UsersController(Model.AppContext context) 
+        {
+            this.context = context;
+        }
+
         [HttpGet]
         public IEnumerable<User> Get()
         {
@@ -24,7 +31,7 @@ namespace Project3.Controllers
         {
             try
             {
-                DBMethods.SaveGroup(usersToSave.ToList<User>());
+                DBMethods.SaveGroup(usersToSave.ToList<User>(),context);
                 return Ok();
             }
             catch (Exception)
@@ -80,12 +87,6 @@ namespace Project3.Controllers
         {
             public List<int> UsersLifeTime { get; set; }
             public string RR7days { get; set; }
-        }
-
-        public class PostData
-        {
-            public string date1 { get; set; }
-            public string date2 { get; set; }
         }
     }
 }

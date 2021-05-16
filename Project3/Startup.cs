@@ -25,8 +25,8 @@ namespace Project3
             services.AddMvc();
             services.AddControllersWithViews();
             
-            //services.AddDbContext<AppContext>(options =>
-                //options.UseSqlServer(Configuration.GetConnectionString("AppContext"))); //"Server=(localdb)\\mssqllocaldb;Database=UsersHistory;Trusted_Connection=True;")
+            services.AddDbContext<UsersContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("UsersController")));
             
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
